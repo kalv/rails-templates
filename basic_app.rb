@@ -33,10 +33,6 @@ public/attachments
 # copy sample database config
 run "cp config/database.yml config/database.yml.sample"
 
-inside('vendor') do
-  run "ln -s ~/commit-rails/rails rails"
-end
-
 # set up plugins and common gems
 plugin 'rspec', :git => 'git://github.com/dchelimsky/rspec.git', :submodule => true
 plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git', :submodule => true
@@ -54,8 +50,6 @@ gem 'sqlite3-ruby', :lib => 'sqlite3'
 
 gem 'haml'
 gem 'chriseppstein-compass', :lib => 'compass'
- 
-rake("gems:install", :sudo => true)
 
 # set up user
 rake('db:sessions:create')
@@ -87,5 +81,7 @@ run 'curl -L http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.j
  
 git :add => '.'
 git :commit => "-a -m 'Initial commit'"
+
+rake("gems:install", :sudo => true)
 
 log "initialized", "application structure"
