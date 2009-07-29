@@ -36,16 +36,8 @@ run "cp config/database.yml config/database.yml.sample"
 # set up plugins and common gems
 plugin 'rspec', :git => 'git://github.com/dchelimsky/rspec.git', :submodule => true
 plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git', :submodule => true
-#plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
-#plugin 'asset_packager', :git => 'git://github.com/sbecker/asset_packager.git', :submodule => true
-#plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git', :submodule => true
-#plugin 'restful-authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', :submodule =>true
-#plugin 'aasm', :git => 'git://github.com/rubyist/aasm.git', :submodule => true
-#plugin 'acts_as_taggable_redux', :git => 'git://github.com/geemus/acts_as_taggable_redux.git', :submodule => true
  
-gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
 gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate',  :source => 'http://gems.github.com'
-gem 'ruby-openid', :lib=>"openid"
 gem 'sqlite3-ruby', :lib => 'sqlite3'
 
 gem 'haml'
@@ -53,11 +45,6 @@ gem 'chriseppstein-compass', :lib => 'compass'
 
 # set up user
 rake('db:sessions:create')
-generate("authenticated", "user session")
-generate("rspec")
-generate("roles", "Role User")
-rake('acts_as_taggable:db:create')
-rake('open_id_authentication:db:create')
 rake('db:migrate')
 
 # set up session store
@@ -68,7 +55,7 @@ ActionController::Base.session_store = :active_record_store
   
 git :submodule => "init"
 
-# setup haml
+# setup haml and blueprint
 run "haml --rails ."
 run "echo -e 'y\nn\n' | compass --rails -f blueprint"
 
