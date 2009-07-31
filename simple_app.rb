@@ -34,12 +34,13 @@ public/attachments
 run "cp config/database.yml config/database.yml.sample"
 
 # set up plugins and common gems
-plugin 'rspec', :git => 'git://github.com/dchelimsky/rspec.git', :submodule => true
-plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git', :submodule => true
+#plugin 'rspec', :git => 'git://github.com/dchelimsky/rspec.git'
+#plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git'
  
 gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate',  :source => 'http://gems.github.com'
 gem 'sqlite3-ruby', :lib => 'sqlite3'
-
+gem 'rspec', :lib => false
+gem 'rspec-rails', :lib => false
 gem 'haml'
 gem 'chriseppstein-compass', :lib => 'compass'
 
@@ -53,7 +54,7 @@ ActionController::Base.session = { :session_key => '_#{(1..6).map { |x| (65 + ra
 ActionController::Base.session_store = :active_record_store
   END
   
-git :submodule => "init"
+#git :submodule => "init"
 
 # setup haml and blueprint
 run "haml --rails ."
@@ -65,6 +66,8 @@ run "rm -f public/javascripts/*"
 run "curl -L http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js > public/javascripts/jquery.min.js"
 run "curl -L http://jqueryjs.googlecode.com/svn/trunk/plugins/form/jquery.form.js > public/javascripts/jquery.form.js"
 run 'curl -L http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js > public/javascripts/jquery.ui.min.js'
+
+run './script/generate rspec'
  
 git :add => '.'
 git :commit => "-a -m 'Initial commit'"
