@@ -60,14 +60,15 @@ ActionController::Base.session_store = :active_record_store
 run "haml --rails ."
 run "echo -e 'y\nn\n' | compass --rails -f blueprint"
 
+# set up rspec
+run './script/generate rspec'
+
 # Sort out Javascript
 run "rm -f public/javascripts/*"
  
 run "curl -L http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js > public/javascripts/jquery.min.js"
 run "curl -L http://jqueryjs.googlecode.com/svn/trunk/plugins/form/jquery.form.js > public/javascripts/jquery.form.js"
 run 'curl -L http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js > public/javascripts/jquery.ui.min.js'
-
-run './script/generate rspec'
  
 git :add => '.'
 git :commit => "-a -m 'Initial commit'"

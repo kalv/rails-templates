@@ -34,8 +34,8 @@ public/attachments
 run "cp config/database.yml config/database.yml.sample"
 
 # set up plugins and common gems
-plugin 'rspec', :git => 'git://github.com/dchelimsky/rspec.git', :submodule => true
-plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git', :submodule => true
+#plugin 'rspec', :git => 'git://github.com/dchelimsky/rspec.git', :submodule => true
+#plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git', :submodule => true
 #plugin 'open_id_authentication', :git => 'git://github.com/rails/open_id_authentication.git', :submodule => true
 #plugin 'asset_packager', :git => 'git://github.com/sbecker/asset_packager.git', :submodule => true
 #plugin 'role_requirement', :git => 'git://github.com/timcharper/role_requirement.git', :submodule => true
@@ -44,20 +44,19 @@ plugin 'rspec-rails', :git => 'git://github.com/dchelimsky/rspec-rails.git', :su
 #plugin 'acts_as_taggable_redux', :git => 'git://github.com/geemus/acts_as_taggable_redux.git', :submodule => true
  
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
-gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate',  :source => 'http://gems.github.com'
-gem 'ruby-openid', :lib=>"openid"
+gem 'mislav-will_paginate', :version => '> 2.2.3', :lib => 'will_paginate',  :source => 'http://gems.github.com'
 gem 'sqlite3-ruby', :lib => 'sqlite3'
-
+gem 'rspec', :lib=>false
+gem 'rspec-rails', :lib=>false
 gem 'haml'
 gem 'chriseppstein-compass', :lib => 'compass'
+gem 'cucumber', :lib=>false
+gem 'webrat', :lib=>false
 
 # set up user
 rake('db:sessions:create')
-generate("authenticated", "user session")
 generate("rspec")
-generate("roles", "Role User")
-rake('acts_as_taggable:db:create')
-rake('open_id_authentication:db:create')
+generate("cucumber")
 rake('db:migrate')
 
 # set up session store
@@ -66,7 +65,7 @@ ActionController::Base.session = { :session_key => '_#{(1..6).map { |x| (65 + ra
 ActionController::Base.session_store = :active_record_store
   END
   
-git :submodule => "init"
+#git :submodule => "init"
 
 # setup haml
 run "haml --rails ."
