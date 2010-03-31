@@ -3,7 +3,7 @@
 #
 # creates a script/bundler that can be ran within the created project
 
-inside '.bundler/bundler' do  
+inside '.bundle/bundler' do
   run 'git init'
   run 'git pull --depth 1 git://github.com/carlhuda/bundler.git' 
   run 'rm -rf .git .gitignore'
@@ -11,7 +11,7 @@ end
 
 file 'script/bundler', %{
 #!/usr/bin/env ruby
-$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundler/bundler/lib"))
+$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle/bundler/lib"))
 require 'rubygems'
 require 'rubygems/command'
 require 'bundler'
@@ -52,13 +52,13 @@ config/database.yml
 
 run 'script/bundler install'
 
-append_file '/config/preinitializer.rb', %{
+file 'config/preinitializer.rb', %{
 begin
   # Require the preresolved locked set of gems.
-  require File.expand_path('../../.bundler/environment', __FILE__)
+  require File.expand_path('../../.bundle/environment', __FILE__)
 rescue LoadError
   # Fallback on doing the resolve at runtime.
-  $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundler/bundler/lib"))
+  $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle/bundler/lib"))
   require "rubygems"
   require "bundler"
   Bundler.setup
@@ -103,10 +103,9 @@ run "rm -f public/javascripts/*"
 run "rm public/index.html"
 
 # set up session store
-initializer 'session_store.rb', <<-END
-ActionController::Base.session = { :session_key => '_#{(1..6).map { |x| (65 + rand(26)).chr }.join}_session', :secret => '#{(1..40).map { |x| (65 + rand(26)).chr }.join}' }
-ActionController::Base.session_store = :active_record_store
-  END
-  
+gsub_file 'config/initializers/session_store.rb',
+  '# ActionController::Base.session_store = :active_record_store',
+  'ActionController::Base.session_store = :active_record_store'
+
 git :add => '.'
 git :commit => "-a -m 'Initial commit'"
