@@ -29,12 +29,12 @@ run 'chmod +x script/bundler'
 file 'Gemfile', %{
 source :gemcutter
 
-gem 'rails', '2.3.5', :require => nil
+gem 'rails', '3.0.0.beta', :require => nil
 gem "sqlite3-ruby", :require => "sqlite3"
 
 group :test do
   gem 'ruby-debug'
-  gem 'shoulda'
+  gem 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :branch => 'rails3', :require => false
   gem 'factory_girl'
 end
 }.strip
@@ -86,6 +86,12 @@ gsub_file 'config/boot.rb', "Rails.boot!", %{
   end
 
   Rails.boot!
+}
+
+gsub_file 'config/application.rb', '# Settings in config/environments/* take precedence over those specified here.', %{
+  # Setting root here is a workaround for an issue where tests run directly in
+  # TextMate are started with the wrong root folder, and so fail.
+  config.root = File.expand_path("../..", __FILE__)
 }
 
 # init git repo
